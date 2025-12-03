@@ -20,7 +20,7 @@ module.exports = {
     name: "animequiz",
     aliases: ["animeqz", "aniquiz", "aniqz"],
     version: "1.0",
-    author: "Saimx69x",
+    author: "SiFu",
     countDown: 10,
     role: 0,
     category: "game",
@@ -29,7 +29,7 @@ module.exports = {
 
   onStart: async function ({ api, event }) {
     try {
-      const GITHUB_RAW = "https://raw.githubusercontent.com/Saim-x69x/sakura/main/ApiUrl.json";
+      const GITHUB_RAW = "https://raw.githubusercontent.com/Ewr-Sifu/sizuka/refs/heads/main/ApiUrl.json";
       const rawRes = await axios.get(GITHUB_RAW);
       const quizApiBase = rawRes.data.apiv1;
 
