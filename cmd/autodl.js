@@ -1,4 +1,4 @@
-const axios = require("axios");
+,cmd install alldl.js const axios = require("axios");
 const fs = require("fs-extra");
 const path = require("path");
 
@@ -20,9 +20,9 @@ const supportedDomains = [
 
 module.exports = {
   config: {
-    name: "autodl",
+    name: "alldl",
     version: "2.0",
-    author: "Saimx69x",
+    author: "SiFu ⚡",
     role: 0,
     shortDescription: "All-in-one video/media downloader",
     longDescription:
@@ -68,21 +68,18 @@ module.exports = {
       const filePath = path.join(cacheDir, `auto_media_${Date.now()}.${extension}`);
       fs.writeFileSync(filePath, Buffer.from(buffer));
 
-      api.setMessageReaction("✅️", event.messageID, () => {}, true);
+      api.setMessageReaction("🐳", event.messageID, () => {}, true);
       
       const domain = supportedDomains.find(d => content.includes(d)) || "Unknown Platform";
       const platformName = domain.replace(/(\.com|\.app|\.video|\.net)/, "").toUpperCase();
 
       const infoCard = 
-`━━━━━━━━━━━━━━
-𝐌𝐞𝐝𝐢𝐚 𝐃𝐨𝐰𝐧𝐥𝐨𝐚𝐝𝐞𝐝 ✅
-╭─╼━━━━━━━━╾─╮
-│ Title      : ${mediaTitle}
-│ Platform   : ${platformName}
-│ Status     : Success
-╰─━━━━━━━━━╾─╯
-━━━━━━━━━━━━━━
-Made with ❤️ by Saimx69x.`;
+`┍━━━━━━━━━━━━━━━━━━━◊
+ [🎀] ᴅʟ ᴄᴏᴍᴘʟᴇᴛᴇ
+ [ℹ️] ᴘʟαᴛꜰᴏʀᴍ: ${platformName}
+ [🐳] sᴛᴀᴛᴜs : sᴜᴄᴄᴇss
+ [👑] ᴏᴡɴᴇʀ: ꜱɪꜰᴜ 
+┕━━━━━━━━━━━━━━━━━━━━◊`;
 
       api.sendMessage(
         { body: infoCard, attachment: fs.createReadStream(filePath) },
