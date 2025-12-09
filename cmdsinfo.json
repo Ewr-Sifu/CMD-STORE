@@ -1,7 +1,7 @@
 {
   "cmdName": [
   {
-    "cmd": "cmdstore",
+    "cmd": "cs",
     "author": "SiFu",
     "update": "2025-12-09",
     "status": "on"
@@ -14,6 +14,12 @@
   },
   {
     "cmd": "4k",
+    "author": "SiFu",
+    "update": "2025-12-09",
+    "status": "on"
+  },
+    {
+    "cmd": "raw",
     "author": "SiFu",
     "update": "2025-12-09",
     "status": "on"
