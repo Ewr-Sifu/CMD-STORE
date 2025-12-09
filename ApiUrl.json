@@ -1,7 +1,8 @@
 {
   "apiv1": "https://xsaim8x-xxx-api.onrender.com",
   "apiv2": "https://dev.oculux.xyz",
-  "apiv3": "https://sifuapi.vercel.app"
+  "apiv3": "https://sifuapi.vercel.app",
+  "apiv4": "https://mahmud-global-apis.onrender.com",
   "dp": "https://mahmud-cdp-apis.onrender.com",
    "age": "https://mahmud-age-apis.onrender.com",
    "sing": "https://mahmud-sing-apis.onrender.com",
@@ -10,7 +11,6 @@
 "anisr": "https://mahmud-anisrx.onrender.com",
 "prompt": "https://mahmud-prompt.onrender.com",
 "album": "https://mahmud-album7.onrender.com",
-"mahmud": "https://mahmud-global-apis.onrender.com",
 "jan": "https://mahmud-global-apis.onrender.com/api"
 
 }
