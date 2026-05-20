@@ -146,7 +146,7 @@ async function SIFU_generate(api, message, ids, text) {
             ...ok.map(({id})=>{ const e=SIFU_EFFECTS[id]; return `  ${SIFU_CAT_EMOJI[e.c]||"🎨"} #${String(id).padStart(3,"0")} │ ${e.n} [${e.c}]`; }),
             `› ${sc("text")}: ${text}`,
             fail ? `⚠️ ${sc(`${fail} failed`)}` : null,
-            RULE, sc("✦ sifat — marin bot"),
+            RULE, sc("✦ POWDER BY ____"),
         ].filter(Boolean).join("\n");
     } else {
         const e = SIFU_EFFECTS[ok[0].id];
@@ -156,7 +156,7 @@ async function SIFU_generate(api, message, ids, text) {
             `› ${sc("style")}: ${SIFU_CAT_EMOJI[e.c]||"🎨"} ${e.c}`,
             `› ${sc("text")}: ${text}`,
             `› ${sc("chars")}: ${text.length}/${MAX_CHARS}`,
-            RULE, sc("✦ sifat — marin bot"),
+            RULE, sc("✦ POWDER BY ____ "),
         ].join("\n");
     }
 
@@ -165,7 +165,7 @@ async function SIFU_generate(api, message, ids, text) {
 
 module.exports = {
     config: {
-        name: "sifutext", aliases: ["stx","txtfx","tf"],
+        name: "textfx", aliases: ["tx","txtfx","tf"],
         version: "2.0", author: "SIFAT", countDown: 5, role: 0,
         shortDescription: { en: "182 stylish text effect images" },
         longDescription:  { en: "Generate stylish 3D/neon/metal/glitter text images." },
@@ -178,7 +178,7 @@ module.exports = {
 
         const replyText = event.messageReply?.body?.trim() || "";
         if (!args[0]) return message.reply(
-            `╔══[ ${sc("sifutext — help")} ]\n${RULE}\n` +
+            `╔══[ ${sc("textfx — help")} ]\n${RULE}\n` +
             `› tf <1-182> <text>\n› tf 1,5,32 <text>  (max ${MAX_MULTI})\n› tf random <text>\n› tf random <cat> <text>\n› tf list / tf list <cat>\n› tf search <keyword>\n› tf top\n💡 Reply any msg + tf <n>\n${RULE}\n` +
             Object.entries(SIFU_CAT_EMOJI).map(([c,e])=>`  ${e} ${sc(c).padEnd(12)} ${S1FU_byCat(c).length} effects`).join("\n")
         );
