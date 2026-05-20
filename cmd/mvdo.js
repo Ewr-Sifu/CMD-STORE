@@ -49,7 +49,7 @@ module.exports = {
     name: "myvideo",
     aliases: ["mvd", "myv", "mv"],
     version: "4.2",
-    author: "Raihan × SIFAT",
+    author: "SIFAT",
     role: 0,
     description: "Advanced Video Manager - New MongoDB Cluster + Auto Reconnect",
     category: "media",
