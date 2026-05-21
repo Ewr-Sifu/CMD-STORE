@@ -1,121 +1,137 @@
 const axios = require("axios");
-const fs = require("fs");
-const path = require("path");
 
-const cmdsInfoUrl = "https://raw.githubusercontent.com/Ewr-Sifu/CMD-STORE/main/cmdsinfo.json";
-const cmdsUrlJson = "https://raw.githubusercontent.com/Ewr-Sifu/CMD-STORE/main/cmdsurl.json";
-const fontUrl = "https://raw.githubusercontent.com/Ewr-Sifu/CMD-STORE/main/xfont.json";
+const CMDS_INFO_URL = "https://raw.githubusercontent.com/Ewr-Sifu/CMD-STORE/main/cmdsinfo.json";
+const CMDS_URL_JSON = "https://raw.githubusercontent.com/Ewr-Sifu/CMD-STORE/main/cmdsurl.json";
+const FONT_URL = "https://raw.githubusercontent.com/Ewr-Sifu/CMD-STORE/main/xfont.json";
+
 const ITEMS_PER_PAGE = 10;
-
 let fontMap = {};
+
 async function loadFont() {
   try {
-    const res = await axios.get(fontUrl);
-    fontMap = res.data;
+    if (Object.keys(fontMap).length > 0) return;
+    const res = await axios.get(FONT_URL);
+    fontMap = res.data || {};
   } catch (err) {
-    console.error("Failed to load font.json:", err);
+    console.error("Font load failed:", err);
   }
 }
 
 function toBold(text) {
-  return text.split("").map(ch => fontMap[ch] || ch).join("");
+  if (!text) return "";
+  return text.toString().split("").map(ch => fontMap[ch] || ch).join("");
 }
 
-module.exports.config = {
-  name: "cs",
-  aliases: ["cmdstore"],
-  author: "SiFu",
-  version: "2.0",
-  role: 0,
-  countDown: 3,
-  category: "owner",
-  shortDescription: "sizukaCommand Store",
-  longDescription: "Access bot commands list and their URLs.",
-  guide: { en: "Usage: /cs [command | letter | page]" }
-};
+module.exports = {
+  config: {
+    name: "cs",
+    aliases: ["cmdstore", "cmds"],
+    version: "2.3",
+    author: "SIFAT",
+    countDown: 3,
+    role: 0,
+    category: "owner",
+    shortDescription: "Command Store",
+    longDescription: "Browse and download commands from CMD Store",
+    guide: { en: "cs [search | page]" }
+  },
 
-module.exports.onStart = async function ({ api, event, args }) {
-  await loadFont();
-  const query = args.join(" ").trim().toLowerCase();
+  onStart: async function ({ api, event, args }) {
+    await loadFont();
+    const query = args.join(" ").trim().toLowerCase();
 
-  try {
-    const response = await axios.get(cmdsInfoUrl);
-    let cmds = response.data.cmdName;
-    let finalArray = cmds;
-    let page = 1;
+    try {
+      const { data } = await axios.get(CMDS_INFO_URL);
+      let commands = data.cmdName || [];
 
-    if (query) {
-      if (!isNaN(query)) {
-        page = parseInt(query);
-      } else if (query.length === 1) {
-        finalArray = cmds.filter(c => c.cmd.toLowerCase().startsWith(query));
-      } else {
-        finalArray = cmds.filter(c => c.cmd.toLowerCase().includes(query));
+      let filtered = commands;
+      let page = 1;
+
+      if (query) {
+        if (!isNaN(query)) {
+          page = parseInt(query);
+        } else if (query.length === 1) {
+          filtered = commands.filter(c => c.cmd.toLowerCase().startsWith(query));
+        } else {
+          filtered = commands.filter(c => 
+            c.cmd.toLowerCase().includes(query) || 
+            (c.author && c.author.toLowerCase().includes(query))
+          );
+        }
       }
-      if (finalArray.length === 0)
-        return api.sendMessage(`❌ ${toBold(`No command found for "${query}"`)}`, event.threadID, event.messageID);
-    }
 
-    const totalPages = Math.ceil(finalArray.length / ITEMS_PER_PAGE);
-    if (page < 1 || page > totalPages)
-      return api.sendMessage(`❌ ${toBold(`Invalid page number (1-${totalPages})`)}`, event.threadID, event.messageID);
+      if (filtered.length === 0) {
+        return api.sendMessage(`❌ ${toBold(`No results found for "${query}"`)}`, event.threadID, event.messageID);
+      }
 
-    const start = (page - 1) * ITEMS_PER_PAGE;
-    const end = start + ITEMS_PER_PAGE;
-    const cmdsToShow = finalArray.slice(start, end);
+      const totalPages = Math.ceil(filtered.length / ITEMS_PER_PAGE);
+      if (page < 1 || page > totalPages) {
+        return api.sendMessage(`❌ ${toBold(`Invalid page! Use 1-${totalPages}`)}`, event.threadID, event.messageID);
+      }
 
-    let msg = `━━━━━━━━━━━━━━\n🌸 ${toBold("CMD-STORE")}\n━━━━━━━━━━━━━━\n📄 ${toBold(`Page: ${page}/${totalPages}`)}\n🧩 ${toBold(`Total: ${finalArray.length} Cmds`)}\n────────────────\n`;
+      const start = (page - 1) * ITEMS_PER_PAGE;
+      const cmdsToShow = filtered.slice(start, start + ITEMS_PER_PAGE);
 
-    cmdsToShow.forEach((cmd, i) => {
-      msg += `💠  ${toBold(`${start + i + 1}. ${cmd.cmd}`)}\n👨‍💻 ${toBold(`Author: ${cmd.author}`)}\n🕓 ${toBold(`Update: ${cmd.update || "Unknown"}`)}\n────────────────\n`;
-    });
+      let msg = `╔━━━━━━━━━━━━━━━╗\n`;
+      msg += `    🍀 ${toBold("𝐂𝐌𝐃 𝐒𝐓𝐎𝐑𝐄")} 🍀\n`;
+      msg += `╚━━━━━━━━━━━━━━━╝\n╔━━━━━━━━━━━━━━━╗\n`;
+      msg += `          📑 ${toBold(`Page ${page} of ${totalPages}`)}\n`;
+      msg += `   📊 ${toBold(`Total Commands: ${filtered.length}`)}\n`;
+      msg += `╚━━━━━━━━━━━━━━━╝\n\n`;
 
-    msg += `📑 ${toBold(`Type "/${this.config.name} ${page + 1}" for next page.`)}\n━━━━━━━━━━━━━━`;
-
-    api.sendMessage(msg, event.threadID, (err, info) => {
-      global.GoatBot.onReply.set(info.messageID, {
-        commandName: this.config.name,
-        type: "reply",
-        messageID: info.messageID,
-        author: event.senderID,
-        cmdName: finalArray,
-        page
+      cmdsToShow.forEach((cmd, i) => {
+        msg += `💎 ${toBold(`${start + i + 1}. ${cmd.cmd}`)}\n`;
+        msg += `👤 ${toBold(`Author: ${cmd.author || "Unknown"}`)}\n`;
+        msg += `🕒 ${toBold(`Updated: ${cmd.update || "N/A"}`)}\n`;
+        msg += ` ═━─────────────━═\n`;
       });
-    }, event.messageID);
 
-  } catch (err) {
-    console.error(err);
-    api.sendMessage(`❌ ${toBold("Failed to load command list!")}`, event.threadID, event.messageID);
-  }
-};
+      msg += `🔢 ${toBold("Reply with a number to get download link")}\n`;
+      msg += `➡️ ${toBold(`Type: cs ${page + 1} for next page`)}`;
 
-module.exports.onReply = async function ({ api, event, Reply }) {
-  await loadFont();
-  if (Reply.author !== event.senderID)
-    return api.sendMessage(toBold("Gowk Gowk Gowk"), event.threadID, event.messageID);
+      api.sendMessage(msg, event.threadID, (err, info) => {
+        if (err) return;
+        global.GoatBot.onReply.set(info.messageID, {
+          commandName: "cs",
+          author: event.senderID,
+          filteredCmds: filtered,
+          currentPage: page
+        });
+      }, event.messageID);
 
-  const replyNum = parseInt(event.body);
-  const start = (Reply.page - 1) * ITEMS_PER_PAGE;
-  const end = start + ITEMS_PER_PAGE;
+    } catch (err) {
+      console.error(err);
+      api.sendMessage(`❌ ${toBold("Failed to connect to CMD Store")}`, event.threadID, event.messageID);
+    }
+  },
 
-  if (isNaN(replyNum) || replyNum < start + 1 || replyNum > end)
-    return api.sendMessage(toBold(`❌ Please reply between ${start + 1} and ${Math.min(end, Reply.cmdName.length)}.`), event.threadID, event.messageID);
+  onReply: async function ({ api, event, Reply }) {
+    await loadFont();
+    if (Reply.author !== event.senderID) return;
 
-  try {
-    const cmdName = Reply.cmdName[replyNum - 1].cmd;
-    const { status } = Reply.cmdName[replyNum - 1];
-    const response = await axios.get(cmdsUrlJson);
-    const cmdUrl = response.data[cmdName];
+    const num = parseInt(event.body);
+    if (isNaN(num)) return;
 
-    if (!cmdUrl)
-      return api.sendMessage(toBold("❌ Command URL not found!"), event.threadID, event.messageID);
+    const cmdData = Reply.filteredCmds[num - 1];
+    if (!cmdData) return api.sendMessage(toBold("❌ Invalid selection!"), event.threadID, event.messageID);
 
-    api.unsendMessage(Reply.messageID);
-    const msg = `━━━━━━━━━━━━━━\n📘 ${toBold("Command Info")}\n━━━━━━━━━━━━━━\n🧩 ${toBold(`Name: ${cmdName}`)}\n⚙️ ${toBold(`Status: ${status || "Unavailable"}`)}\n🌐 URL: ${cmdUrl}\n━━━━━━━━━━━━━━`;
+    try {
+      const { data } = await axios.get(CMDS_URL_JSON);
+      const link = data[cmdData.cmd];
 
-    api.sendMessage(msg, event.threadID, event.messageID);
-  } catch (err) {
-    console.error(err);
-    api.sendMessage(toBold("❌ Failed to fetch command URL!"), event.threadID, event.messageID);
+      if (!link) return api.sendMessage(toBold("❌ Download link not available!"), event.threadID, event.messageID);
+
+      const msg = `╔━═━───────────━═━╗\n`;
+      msg += `📘 ${toBold("𝐂𝐎𝐌𝐌𝐀𝐍𝐃 𝐈𝐍𝐅𝐎")} 📘\n`;
+      msg += `═━─────────────━═\n`;
+      msg += `🧩 ${toBold(`Command: ${cmdData.cmd}`)}\n`;
+      msg += `👤 ${toBold(`Author: ${cmdData.author || "Unknown"}`)}\n`;
+      msg += `🔗 ${toBold(`Link: ${link}`)}\n`;
+      msg += ` ╚━═━───────────━═━╝`;
+
+      api.sendMessage(msg, event.threadID, event.messageID);
+    } catch (err) {
+      api.sendMessage(toBold("❌ Failed to fetch link!"), event.threadID, event.messageID);
+    }
   }
 };
