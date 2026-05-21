@@ -1,10 +1,14 @@
 {
-  "4k": "https://raw.githubusercontent.com/Ewr-Sifu/sizuka/refs/heads/main/cmd/4k.js", 
-  "alldl": "https://raw.githubusercontent.com/Ewr-Sifu/sizuka/refs/heads/main/cmd/alldl.js",
-  "help": "https://raw.githubusercontent.com/Ewr-Sifu/sizuka/refs/heads/main/cmd/help.js",
-  "cs": "https://raw.githubusercontent.com/Ewr-Sifu/sizuka/refs/heads/main/cmd/cs.js",
-  "raw":"https://raw.githubusercontent.com/Ewr-Sifu/sizuka/refs/heads/main/cmd/raw.js",
+  "4k": "https://raw.githubusercontent.com/Ewr-Sifu/CMD-STORE/refs/heads/main/cmd/4k.js", 
+  "alldl": "https://raw.githubusercontent.com/Ewr-Sifu/CMD-STORE/refs/heads/main/cmd/alldl.js",
+  "help": "https://raw.githubusercontent.com/Ewr-Sifu/CMD-STORE/refs/heads/main/cmd/help.js",
+  "cs": "https://raw.githubusercontent.com/Ewr-Sifu/CMD-STORE/refs/heads/main/cmd/cs.js",
+  "raw":"https://raw.githubusercontent.com/Ewr-Sifu/CMD-STORE/refs/heads/main/cmd/raw.js",
   "txtfx": "https://raw.githubusercontent.com/Ewr-Sifu/CMD-STORE/refs/heads/main/cmd/txtfx.js",
   "pastebin": "https://raw.githubusercontent.com/Ewr-Sifu/CMD-STORE/refs/heads/main/cmd/pastebin.js",
-  "": "",
+  "prefix": "https://raw.githubusercontent.com/Ewr-Sifu/CMD-STORE/refs/heads/main/cmd/prefix.js",
+  "ytb": "https://raw.githubusercontent.com/Ewr-Sifu/CMD-STORE/refs/heads/main/cmd/ytb.js",
+  "sing": "https://raw.githubusercontent.com/Ewr-Sifu/CMD-STORE/refs/heads/main/cmd/sing.js",
+  "mvdo": "https://raw.githubusercontent.com/Ewr-Sifu/CMD-STORE/refs/heads/main/cmd/mvdo.js",
+  "album": "https://raw.githubusercontent.com/Ewr-Sifu/CMD-STORE/refs/heads/main/cmd/album.js"
 }
