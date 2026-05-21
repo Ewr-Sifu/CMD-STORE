@@ -10,5 +10,6 @@
   "ytb": "https://raw.githubusercontent.com/Ewr-Sifu/CMD-STORE/refs/heads/main/cmd/ytb.js",
   "sing": "https://raw.githubusercontent.com/Ewr-Sifu/CMD-STORE/refs/heads/main/cmd/sing.js",
   "mvdo": "https://raw.githubusercontent.com/Ewr-Sifu/CMD-STORE/refs/heads/main/cmd/mvdo.js",
-  "album": "https://raw.githubusercontent.com/Ewr-Sifu/CMD-STORE/refs/heads/main/cmd/album.js"
+  "album": "https://raw.githubusercontent.com/Ewr-Sifu/CMD-STORE/refs/heads/main/cmd/album.js",
+  "amv": "https://raw.githubusercontent.com/Ewr-Sifu/CMD-STORE/refs/heads/main/cmd/amv.js"
 }
