@@ -3,7 +3,7 @@
 const axios        = require("axios");
 const { Readable } = require("stream");
 
-const SIFAT_CHUDTESE = "https://raw.githubusercontent.com/Ewr-Sifu/SIFATChudtese/refs/heads/main/sifatapichudtese.json";
+const SIFAT_CHUDTESE = "https://raw.githubusercontent.com/MYB-SIFU/SIFATChudtese/refs/heads/main/sifatapichudtese.json";
 const SIFU_FALLBACK  = "";
 const MAX_CHARS      = 60;
 const MAX_MULTI      = 4;
@@ -146,7 +146,7 @@ async function SIFU_generate(api, message, ids, text) {
             ...ok.map(({id})=>{ const e=SIFU_EFFECTS[id]; return `  ${SIFU_CAT_EMOJI[e.c]||"🎨"} #${String(id).padStart(3,"0")} │ ${e.n} [${e.c}]`; }),
             `› ${sc("text")}: ${text}`,
             fail ? `⚠️ ${sc(`${fail} failed`)}` : null,
-            RULE, sc("✦ POWDER BY ____"),
+            RULE, sc("✦ POWDER BY 🦖 Your name"),
         ].filter(Boolean).join("\n");
     } else {
         const e = SIFU_EFFECTS[ok[0].id];
@@ -156,7 +156,7 @@ async function SIFU_generate(api, message, ids, text) {
             `› ${sc("style")}: ${SIFU_CAT_EMOJI[e.c]||"🎨"} ${e.c}`,
             `› ${sc("text")}: ${text}`,
             `› ${sc("chars")}: ${text.length}/${MAX_CHARS}`,
-            RULE, sc("✦ POWDER BY ____ "),
+            RULE, sc("✦ POWDER BY 🐳 your name"),
         ].join("\n");
     }
 
